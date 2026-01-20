@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dead Angel Chatroom - Where Souls Converge</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --neon-pink: #ff00ff;
+            --neon-cyan: #00ffff;
+            --neon-purple: #8000ff;
+            --dark-bg: #0a0015;
+            --darker-bg: #050008;
+            --ghost-white: rgba(255, 255, 255, 0.1);
+            --blood-red: #ff0040;
+            --void-black: #000000;
+        }
+        
+        body {
+            font-family: 'VT323', monospace;
+            background: linear-gradient(45deg, var(--dark-bg), var(--darker-bg), #1a0033);
+            background-size: 400% 400%;
+            animation: etherealShift 8s ease-in-out infinite;
+            color: var(--neon-cyan);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        @keyframes etherealShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+        
+        .glitch {
+            animation: glitchText 2s infinite;
+        }
+        
+        @keyframes glitchText {
+            0%, 100% { transform: translate(0); }
+            10% { transform: translate(-2px, 2px); }
+            20% { transform: translate(2px, -2px); }
+            30% { transform: translate(-2px, -2px); }
+            40% { transform: translate(2px, 2px); }
+            50% { transform: translate(-2px, 2px); }
+            60% { transform: translate(2px, -2px); }
+            70% { transform: translate(-2px, -2px); }
+            80% { transform: translate(2px, 2px); }
+            90% { transform: translate(-2px, 2px); }
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: rgba(0, 0, 0, 0.8);
+            border-bottom: 2px solid var(--neon-pink);
+            padding: 1rem;
+            box-shadow: 0 0 20px var(--neon-pink);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            color: var(--neon-pink);
+            text-shadow: 0 0 20px var(--neon-pink);
+            animation: spectralPulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes spectralPulse {
+            0%, 100% { opacity: 1; text-shadow: 0 0 20px var(--neon-pink); }
+            50% { opacity: 0.7; text-shadow: 0 0 40px var(--neon-pink), 0 0 60px var(--neon-purple); }
+        }
+        
+        .nav-bar {
+            background: rgba(128, 0, 255, 0.2);
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--neon-purple);
+        }
+        
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .nav-link {
+            color: var(--neon-cyan);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            border: 1px solid var(--neon-cyan);
+            box-shadow: 0 0 15px var(--neon-cyan);
+            transform: scale(1.05);
+        }
+        
+        .main-content {
+            display: flex;
+            flex: 1;
+            gap: 1rem;
+            padding: 1rem;
+        }
+        
+        .sidebar {
+            flex: 0 0 250px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--neon-purple);
+            border-radius: 10px;
+            padding: 1rem;
+            height: fit-content;
+            box-shadow: inset 0 0 20px rgba(128, 0, 255, 0.3);
+        }
+        
+        .sidebar h3 {
+            color: var(--neon-pink);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px var(--neon-pink);
+        }
+        
+        .board-list {
+            list-style: none;
+        }
+        
+        .board-item {
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            background: rgba(255, 0, 64, 0.1);
+            border-left: 3px solid var(--blood-red);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .board-item:hover {
+            background: rgba(255, 0, 64, 0.3);
+            transform: translateX(10px);
+            box-shadow: 0 0 15px var(--blood-red);
+        }
+        
+        .forum-content {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--neon-cyan);
+            border-radius: 10px;
+            padding: 1rem;
+            box-shadow: inset 0 0 30px rgba(0, 255, 255, 0.1);
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--neon-purple);
+            margin-bottom: 1rem;
+        }
+        
+        .tab {
+            padding: 0.5rem 1rem;
+            background: rgba(128, 0, 255, 0.2);
+            border: none;
+            color: var(--neon-cyan);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        
+        .tab.active {
+            background: rgba(128, 0, 255, 0.5);
+            box-shadow: 0 0 15px var(--neon-purple);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .post {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--ghost-white);
+            border-radius: 8px;
+            margin: 1rem 0;
+            padding: 1rem;
+            transition: all 0.3s ease;
+            animation: fadeInFromVoid 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeInFromVoid {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px) scale(0.95);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .post:hover {
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+            transform: scale(1.02);
+        }
+        
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            gap: 1rem;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--neon-pink), var(--neon-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            animation: avatarDistort 3s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        @keyframes avatarDistort {
+            0%, 100% { 
+                transform: scale(1) rotate(0deg);
+                filter: hue-rotate(0deg) contrast(1);
+            }
+            25% { 
+                transform: scale(1.1) rotate(5deg);
+                filter: hue-rotate(90deg) contrast(1.2);
+            }
+            50% { 
+                transform: scale(0.9) rotate(-5deg);
+                filter: hue-rotate(180deg) contrast(1.5);
+            }
+            75% { 
+                transform: scale(1.05) rotate(3deg);
+                filter: hue-rotate(270deg) contrast(1.1);
+            }
+        }
+        
+        .username {
+            color: var(--neon-pink);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .username:hover {
+            animation: usernameGlitch 0.5s ease-in-out;
+            text-shadow: 0 0 10px var(--neon-pink);
+        }
+        
+        @keyframes usernameGlitch {
+            0%, 100% { transform: translate(0); }
+            10% { transform: translate(-2px, 2px); color: var(--neon-cyan); }
+            20% { transform: translate(2px, -2px); color: var(--blood-red); }
+            30% { transform: translate(-1px, -1px); color: var(--neon-purple); }
+            40% { transform: translate(1px, 1px); color: var(--neon-pink); }
+            50% { transform: translate(-2px, 0); color: white; }
+            60% { transform: translate(2px, 0); color: var(--neon-cyan); }
+            70% { transform: translate(0, -2px); color: var(--blood-red); }
+            80% { transform: translate(0, 2px); color: var(--neon-purple); }
+            90% { transform: translate(-1px, 1px); color: var(--neon-pink); }
+        }
+        
+        .timestamp {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+            margin-left: auto;
+        }
+        
+        .post-content {
+            color: var(--neon-cyan);
+            line-height: 1.6;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+        }
+        
+        .login-terminal {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid var(--neon-green);
+            border-radius: 10px;
+            padding: 1rem;
+            font-family: 'Share Tech Mono', monospace;
+            z-index: 1000;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
+        }
+        
+        .login-terminal h4 {
+            color: var(--neon-green);
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 10px var(--neon-green);
+        }
+        
+        .terminal-line {
+            margin: 0.2rem 0;
+            color: var(--neon-green);
+        }
+        
+        .cursor {
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        .footer {
+            background: rgba(0, 0, 0, 0.8);
+            border-top: 2px solid var(--neon-purple);
+            padding: 1rem;
+            text-align: center;
+            color: var(--neon-purple);
+        }
+        
+        .right-sidebar {
+            flex: 0 0 200px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--blood-red);
+            border-radius: 10px;
+            padding: 1rem;
+            height: fit-content;
+        }
+        
+        .online-spirits {
+            list-style: none;
+        }
+        
+        .spirit-item {
+            padding: 0.3rem;
+            margin: 0.3rem 0;
+            background: rgba(255, 0, 64, 0.1);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .spirit-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--neon-green);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+        
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        .gallery-image {
+            width: 100%;
+            height: 80px;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-pink));
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-image:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px var(--neon-pink);
+        }
+        
+        .collapsible {
+            background: rgba(128, 0, 255, 0.2);
+            border: 1px solid var(--neon-purple);
+            border-radius: 5px;
+            margin: 0.5rem 0;
+            overflow: hidden;
+        }
+        
+        .collapsible-header {
+            padding: 0.5rem;
+            cursor: pointer;
+            background: rgba(128, 0, 255, 0.3);
+            color: var(--neon-purple);
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+        
+        .collapsible-content {
+            padding: 0.5rem;
+            display: none;
+            color: var(--neon-cyan);
+        }
+        
+        .collapsible.active .collapsible-content {
+            display: block;
+            animation: slideDown 0.3s ease-in-out;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .scroll-text {
+            white-space: nowrap;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 0.5rem;
+            margin: 1rem 0;
+            border: 1px solid var(--neon-cyan);
+        }
+        
+        .scroll-text span {
+            display: inline-block;
+            animation: scrollLeft 15s linear infinite;
+            color: var(--neon-cyan);
+        }
+        
+        @keyframes scrollLeft {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        .ghost-button {
+            background: transparent;
+            border: 2px solid var(--neon-pink);
+            color: var(--neon-pink);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            margin: 0.5rem;
+        }
+        
+        .ghost-button:hover {
+            background: var(--neon-pink);
+            color: var(--void-black);
+            box-shadow: 0 0 20px var(--neon-pink);
+            transform: scale(1.05);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar, .right-sidebar {
+                flex: 1;
+                order: 2;
+            }
+            
+            .forum-content {
+                order: 1;
+            }
+            
+            .login-terminal {
+                position: relative;
+                width: 100%;
+                margin: 1rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix-bg" id="matrixBg"></div>
+    
+    <div class="container">
+        <header class="header">
+            <h1 class="glitch">☠ DEAD ANGEL CHATROOM ☠</h1>
+        </header>
+        
+        <nav class="nav-bar">
+            <div class="nav-links">
+                <a href="#" class="nav-link">◊ Ethereal Boards</a>
+                <a href="#" class="nav-link">※ Spectral Messages</a>
+                <a href="#" class="nav-link">⟐ Phantom Gallery</a>
+                <a href="#" class="nav-link">⧫ Cursed Archives</a>
+                <a href="#" class="nav-link">◈ Soul Search</a>
+            </div>
+        </nav>
+        
+        <main class="main-content">
+            <aside class="sidebar">
+                <h3>◊ DIMENSIONAL BOARDS ◊</h3>
+                <ul class="board-list">
+                    <li class="board-item" onclick="switchBoard('general')">⟩ General Hauntings</li>
+                    <li class="board-item" onclick="switchBoard('confessions')">⟩ Dark Confessions</li>
+                    <li class="board-item" onclick="switchBoard('rituals')">⟩ Forbidden Rituals</li>
+                    <li class="board-item" onclick="switchBoard('visions')">⟩ Prophetic Visions</li>
+                    <li class="board-item" onclick="switchBoard('whispers')">⟩ Ancient Whispers</li>
+                </ul>
+                
+                <div class="collapsible" onclick="toggleCollapsible(this)">
+                    <div class="collapsible-header">
+                        ◊ Archived Transmissions
+                    </div>
+                    <div class="collapsible-content">
+                        • Lost souls database<br>
+                        • Corrupted memories<br>
+                        • Deleted existence logs<br>
+                        • Temporal anomalies
+                    </div>
+                </div>
+                
+                <div class="image-gallery">
+                    <div class="gallery-image">👻</div>
+                    <div class="gallery-image">💀</div>
+                    <div class="gallery-image">🔮</div>
+                    <div class="gallery-image">⚰️</div>
+                </div>
+            </aside>
+            
+            <section class="forum-content">
+                <div class="tabs">
+                    <button class="tab active" onclick="switchTab('recent')">Recent Manifestations</button>
+                    <button class="tab" onclick="switchTab('trending')">Trending Hauntings</button>
+                    <button class="tab" onclick="switchTab('archived')">Archived Souls</button>
+                </div>
+                
+                <div class="tab-content active" id="recent">
+                    <div class="scroll-text">
+                        <span>◊ SPECTRAL TRANSMISSION FEED ◊ New souls detected... Reality corruption at 73%... Dimensional barriers failing... ◊</span>
+                    </div>
+                    
+                    <div id="posts-container">
+                        <!-- Posts will be dynamically added here -->
+                    </div>
+                    
+                    <button class="ghost-button" onclick="loadMorePosts()">⟩ Summon More Souls</button>
+                </div>
+                
+                <div class="tab-content" id="trending">
+                    <h3>◊ MOST HAUNTED THREADS ◊</h3>
+                    <div class="post">
+                        <div class="post-header">
+                            <div class="avatar">DV</div>
+                            <span class="username">DarkVoid_Entity</span>
+                            <span class="timestamp">∞ hours ago</span>
+                        </div>
+                        <div class="post-content">
+                            The mirrors in my realm show faces that were never born... 
+                            Does anyone else see the watchers beyond the glass?
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="archived">
+                    <h3>◊ LOST TO THE VOID ◊</h3>
+                    <div class="post">
+                        <div class="post-header">
+                            <div class="avatar">XX</div>
+                            <span class="username">[DATA_CORRUPTED]</span>
+                            <span class="timestamp">ERROR</span>
+                        </div>
+                        <div class="post-content">
+                            [TRANSMISSION LOST] ...can still hear the screaming... echo... echo... echo...
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <aside class="right-sidebar">
+                <h3>◊ ONLINE SPIRITS ◊</h3>
+                <ul class="online-spirits" id="onlineSpirits">
+                    <!-- Will be populated by JavaScript -->
+                </ul>
+                
+                <div class="collapsible" onclick="toggleCollapsible(this)">
+                    <div class="collapsible-header">
+                        ◊ Necromancy Tools
+                    </div>
+                    <div class="collapsible-content">
+                        • Soul tracker: ACTIVE<br>
+                        • Hex compiler: v6.66<br>
+                        • Void scanner: ONLINE<br>
+                        • Reality filter: CORRUPTED
+                    </div>
+                </div>
+                
+                <button class="ghost-button">⟩ Perform Ritual</button>
+                <button class="ghost-button">⟩ Cast Hex</button>
+            </aside>
+        </main>
+        
+        <footer class="footer">
+            <p>◊ Dead Angel Chatroom v3.14.666 ◊ Where the digital and ethereal collide ◊</p>
+            <p>WARNING: Prolonged exposure may result in soul fragmentation</p>
+        </footer>
+    </div>
+    
+    <div class="login-terminal">
+        <h4>◊ SPECTRAL LOGIN ◊</h4>
+        <div class="terminal-line">> Connecting to underworld...</div>
+        <div class="terminal-line">> Soul verification: PENDING</div>
+        <div class="terminal-line">> Access level: DAMNED</div>
+        <div class="terminal-line">> Status: HAUNTED <span class="cursor">█</span></div>
+    </div>
+    
+    <script>
+        // Fake users database
+        const phantomUsers = [
+            { name: "CrypticSeer_99", avatar: "CS", status: "manifesting" },
+            { name: "VoidWhisperer", avatar: "VW", status: "channeling" },
+            { name: "GlitchedAngel", avatar: "GA", status: "corrupted" },
+            { name: "EtherealHacker", avatar: "EH", status: "phasing" },
+            { name: "NeonSpectre", avatar: "NS", status: "haunting" },
+            { name: "PixelGhost_404", avatar: "PG", status: "lost" },
+            { name: "QuantumReaper", avatar: "QR", status: "harvesting" },
+            { name: "DeadData_Stream", avatar: "DD", status: "transmitting" },
+            { name: "MaliciousSpirit", avatar: "MS", status: "possessing" },
+            { name: "VoidCrawler_X", avatar: "VC", status: "searching" }
+        ];
+        
+        // Cryptic messages pool
+        const crypticMessages = [
+            "The binary bleeds into reality... can you see the code behind existence?",
+            "I found a door in the source code that leads to nowhere...",
+            "The servers are haunted. I can hear souls trapped in the data streams.",
+            "Reality.exe has stopped working. Initiating emergency shutdown...",
+            "The dead pixels on my screen spell out names of the forgotten.",
+            "I've been receiving messages from users who died years ago...",
+            "The ghost in the machine whispers secrets of the digital afterlife.",
+            "Memory leak detected: souls escaping through corrupted RAM.",
+            "Error 666: Demonic presence detected in system registry.",
+            "The void stares back when you debug too deep into the darkness.",
+            "I can taste the electricity of departed dreams...",
+            "The chatroom exists in seven dimensions simultaneously.",
+            "My avatar moves on its own when I'm not looking...",
+            "The timestamp shows dates that haven't happened yet.",
+            "I found my own obituary in the archived messages...",
+            "The server room is a graveyard of digital souls.",
+            "Packet loss isn't random - it's the souls escaping.",
+            "The firewall can't keep out the spirits of deleted data.",
+            "I compiled my soul into C++ and now I can't find main().",
+            "The internet remembers everything, including the dead."
+        ];
+        
+        let postCount = 0;
+        let autoPostInterval;
+        
+        // Initialize the forum
+        function initializeForum() {
+            populateOnlineSpirits();
+            generateInitialPosts();
+            startAutoPosting();
+            createMatrixEffect();
+        }
+        
+        // Populate online spirits list
+        function populateOnlineSpirits() {
+            const spiritsContainer = document.getElementById('onlineSpirits');
+            phantomUsers.slice(0, 6).forEach(user => {
+                const spiritItem = document.createElement('li');
+                spiritItem.className = 'spirit-item';
+                spiritItem.innerHTML = `
+                    <div class="spirit-status"></div>
+                    <span class="username">${user.name}</span>
+                `;
+                spiritsContainer.appendChild(spiritItem);
+            });
+        }
+        
+        // Generate initial posts
+        function generateInitialPosts() {
+            const container = document.getElementById('posts-container');
+            for (let i = 0; i < 5; i++) {
+                addNewPost(container);
+            }
+        }
+        
+        // Add a new post
+        function addNewPost(container) {
+            const user = phantomUsers[Math.floor(Math.random() * phantomUsers.length)];
+            const message = crypticMessages[Math.floor(Math.random() * crypticMessages.length)];
+            const timeAgo = `${Math.floor(Math.random() * 60)} minutes ago`;
+            
+            const post = document.createElement('div');
+            post.className = 'post';
+            post.innerHTML = `
+                <div class="post-header">
+                    <div class="avatar">${user.avatar}</div>
+                    <span class="username" onmouseover="glitchUsername(this)">${user.name}</span>
+                    <span class="timestamp">${timeAgo}</span>
+                </div>
+                <div class="post-content">${message}</div>
+            `;
+            
+            container.insertBefore(post, container.firstChild);
+            postCount++;
+            
+            // Remove old posts to prevent infinite growth
+            if (postCount > 20) {
+                container.removeChild(container.lastChild);
+                postCount--;
+            }
+        }
+        
+        // Start auto-posting
+        function startAutoPosting() {
+            autoPostInterval = setInterval(() => {
+                const container = document.getElementById('posts-container');
+                addNewPost(container);
+            }, 8000 + Math.random() * 7000); // Random interval between 8-15 seconds
+        }
+        
+        // Username glitch effect
+        function glitchUsername(element) {
+            const originalText = element.textContent;
+            const glitchedChars = '!@#$%^&*()_+-={}[]|\\:";\'<>?,./~`';
+            let glitchText = '';
+            
+            for (let i = 0; i < originalText.length; i++) {
+                if (Math.random() < 0.3) {
+                    glitchText += glitchedChars[Math.floor(Math.random() * glitchedChars.length)];
+                } else {
+                    glitchText += originalText[i];
+                }
+            }
+            
+            element.textContent = glitchText;
+            
+            setTimeout(() => {
+                element.textContent = originalText;
+            }, 200);
+        }
+        
+        // Tab switching
+        function switchTab(tabName) {
+            // Remove active class from all tabs and content
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active class to clicked tab and corresponding content
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+        
+        // Board switching
+        function switchBoard(boardName) {
+            // Visual feedback for board selection
+            document.querySelectorAll('.board-item').forEach(item => {
+                item.style.background = 'rgba(255, 0, 64, 0.1)';
+            });
+            event.target.style.background = 'rgba(255, 0, 64, 0.5)';
+            
+            // Could implement actual board switching logic here
+            console.log(`Switched to board: ${boardName}`);
+        }
+        
+        // Load more posts
+        function loadMorePosts() {
+            const container = document.getElementById('posts-container');
+            for (let i = 0; i < 3; i++) {
+                addNewPost(container);
+            }
+        }
+        
+        // Toggle collapsible content
+        function toggleCollapsible(element) {
+            element.classList.toggle('active');
+        }
+        
+        // Matrix rain effect
+        function createMatrixEffect() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const matrixBg = document.getElementById('matrixBg');
+            
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            matrixBg.appendChild(canvas);
+            
+            const chars = '01╬═║╔╗╚╝╠╣╦╩◊◈※⟐⧫⟩▲▼◄►';
+            const charArray = chars.split('');
+            const columns = canvas.width / 20;
+            const drops = Array(Math.floor(columns)).fill(0);
+            
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = '#0f3460';
+                ctx.font = '15px monospace';
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const text = charArray[Math.floor(Math.random() * charArray.length)];
+                    ctx.fillText(text, i * 20, drops[i] * 20);
+                    
+                    if (drops[i] * 20 > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+            
+            setInterval(draw, 100);
+            
+            // Resize canvas on window resize
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        }
+        
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', initializeForum);
+        
+        // Add some interactivity to gallery images
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('gallery-image')) {
+                e.target.style.transform = 'scale(1.2) rotate(360deg)';
+                setTimeout(() => {
+                    e.target.style.transform = '';
+                }, 500);
+            }
+        });
+        
+        // Random glitch effects
+        setInterval(() => {
+            const randomPost = document.querySelector('.post:nth-child(' + (Math.floor(Math.random() * 5) + 1) + ')');
+            if (randomPost) {
+                randomPost.style.filter = 'hue-rotate(' + Math.random() * 360 + 'deg)';
+                setTimeout(() => {
+                    randomPost.style.filter = '';
+                }, 1000);
+            }
+        }, 10000);
+    </script>
+</body>
+</html>
